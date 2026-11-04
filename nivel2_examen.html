@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Examen Final - Nivel 2 | PWA InnovaPro IA</title>
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #f4f6f9; margin: 0; padding: 20px; color: #333; }
+        .container { max-width: 800px; margin: 0 auto; background: #fff; padding: 30px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); border-top: 5px solid #2563EB; }
+        h1, h2 { color: #2563EB; text-align: center; }
+        .question { margin-bottom: 20px; padding: 15px; background: #fafafa; border-left: 4px solid #2563EB; border-radius: 4px; }
+        .question p { font-weight: bold; margin-bottom: 10px; }
+        label { display: block; margin-bottom: 5px; cursor: pointer; }
+        button { display: block; width: 100%; background: #2563EB; color: #fff; border: none; padding: 12px; font-size: 16px; border-radius: 4px; cursor: pointer; margin-top: 20px; font-weight: bold; }
+        button:hover { background: #1D4ED8; }
+        #result-section { display: none; text-align: center; margin-top: 30px; padding: 20px; background: #eef2ff; border: 1px solid #c7d2fe; border-radius: 4px; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Examen Final - Nivel 2</h1>
+    <h2>Creatividad Visual, Presentaciones (Gamma) y Multimedia Sintética</h2>
+    <p style="text-align: center;">Responde las 10 preguntas basadas en el temario del curso. Necesitas al menos un 70% de aciertos para aprobar el nivel.</p>
+
+    <form id="quiz-form">
+        <!-- Pregunta 1 (Correcta: A) -->
+        <div class="question"><p>1. ¿Cuál es la función principal de <b>Microsoft Designer</b> dentro del bloque de creatividad visual?</p>
+            <label><input type="radio" name="q1" value="a"> A) Generar imágenes y diseños gráficos avanzados mediante descripciones de texto impulsadas por IA.</label>
+            <label><input type="radio" name="q1" value="b"> B) Escribir y depurar código fuente de aplicaciones web complejas.</label>
+            <label><input type="radio" name="q1" value="c"> C) Sincronizar bases de datos en la nube de forma automática.</label>
+        </div>
+
+        <!-- Pregunta 2 (Correcta: B) -->
+        <div class="question"><p>2. ¿Qué tipo de contenido digital permite generar la plataforma <b>Meshy AI</b>?</p>
+            <label><input type="radio" name="q2" value="a"> A) Presentaciones ejecutivas de diapositivas automáticas.</label>
+            <label><input type="radio" name="q2" value="b"> B) Modelos y texturas en formato tridimensional (3D) a partir de texto o imágenes 2D.</label>
+            <label><input type="radio" name="q2" value="c"> C) Locuciones de voz hiperrealistas en formato MP3.</label>
+        </div>
+
+        <!-- Pregunta 3 (Correcta: C) -->
+        <div class="question"><p>3. ¿Qué herramientas del temario se especializan en la creación de voz en off y clonación vocal sintética?</p>
+            <label><input type="radio" name="q3" value="a"> A) Hailuo, Seedance y HeyGen.</label>
+            <label><input type="radio" name="q3" value="b"> B) Gamma App y Tome.</label>
+            <label><input type="radio" name="q3" value="c"> C) ElevenLabs, Descript y TTS Maker.</label>
+        </div>
+
+        <!-- Pregunta 4 (Correcta: A) -->
+        <div class="question"><p>4. ¿Cuál es el enfoque principal de la herramienta de video sintético y cinemático <b>Hailuo</b>?</p>
+            <label><input type="radio" name="q4" value="a"> A) Generar secuencias de video realistas de alta calidad a partir de instrucciones de texto (text-to-video).</label>
+            <label><input type="radio" name="q4" value="b"> B) Diseñar logotipos corporativos y flyers institucionales.</label>
+            <label><input type="radio" name="q4" value="c"> C) Administrar la estructura de carpetas en VS Code.</label>
+        </div>
+
+        <!-- Pregunta 5 (Correcta: B) -->
+        <div class="question"><p>5. En el contexto de los generadores creativos de video por IA, ¿qué destaca a plataformas como <b>Seedance</b>?</p>
+            <label><input type="radio" name="q5" value="a"> A) Su utilidad exclusiva para convertir archivos de Word a PDF.</label>
+            <label><input type="radio" name="q5" value="b"> B) Su capacidad para potenciar la narrativa audiovisual y generar propuestas dinámicas de video.</label>
+            <label><input type="radio" name="q5" value="c"> C) Su función como editor de texto plano para programar en JavaScript.</label>
+        </div>
+
+        <!-- Pregunta 6 (Correcta: C) -->
+        <div class="question"><p>6. ¿Para qué se utiliza principalmente una plataforma como <b>HeyGen</b>?</p>
+            <label><input type="radio" name="q6" value="a"> A) Para generar modelos 3D interactivos en la web.</label>
+            <label><input type="radio" name="q6" value="b"> B) Para diseñar hojas de cálculo contables.</label>
+            <label><input type="radio" name="q6" value="c"> C) Para crear avatares parlantes y presentadores institucionales sincronizados con voz sintética.</label>
+        </div>
+
+        <!-- Pregunta 7 (Correcta: A) -->
+        <div class="question"><p>7. ¿Cuál es la ventaja de utilizar <b>Gamma App</b> o <b>Tome (tome.app)</b> para generar presentaciones?</p>
+            <label><input type="radio" name="q7" value="a"> A) Estructuran y diseñan presentaciones ejecutivas profesionales de manera automática mediante inteligencia artificial.</label>
+            <label><input type="radio" name="q7" value="b"> B) Compilan código de programación en lenguajes de servidor.</label>
+            <label><input type="radio" name="q7" value="c"> C) Editan pistas de audio multipista de nivel profesional.</label>
+        </div>
+
+        <!-- Pregunta 8 (Correcta: B) -->
+        <div class="question"><p>8. ¿Por qué es fundamental el uso de <b>VS Code</b> y una correcta organización de carpetas en los proyectos web?</p>
+            <label><input type="radio" name="q8" value="a"> A) Sirve únicamente para renderizar videos en alta definición en la nube.</label>
+            <label><input type="radio" name="q8" value="b"> B) Permite escribir código fuente de manera ordenada, gestionar archivos index.html y mantener rutas limpias para que el navegador interprete correctamente los recursos.</label>
+            <label><input type="radio" name="q8" value="c"> C) Reemplaza la necesidad de utilizar herramientas de IA visual.</label>
+        </div>
+
+        <!-- Pregunta 9 (Correcta: C) -->
+        <div class="question"><p>9. Si un proyecto web en <b>VS Code</b> no muestra las imágenes o estilos correctamente, ¿cuál suele ser una de las causas más comunes analizadas en el curso?</p>
+            <label><input type="radio" name="q9" value="a"> A) Falta de memoria RAM en el monitor del usuario.</label>
+            <label><input type="radio" name="q9" value="b"> B) Que la computadora no tenga una tarjeta gráfica dedicada.</label>
+            <label><input type="radio" name="q9" value="c"> C) Rutas de archivos incorrectas, nombres mal escritos o recursos guardados fuera de la estructura de carpetas adecuada.</label>
+        </div>
+
+        <!-- Pregunta 10 (Correcta: A) -->
+        <div class="question"><p>10. Al integrar los conocimientos del nivel mediante la creación de tu primera <b>Landing Page con VS Code + Gemini</b>, ¿qué se busca consolidar?</p>
+            <label><input type="radio" name="q10" value="a"> A) La capacidad de ensamblar un sitio web funcional combinando diseño visual, código estructurado y asistencia de IA.</label>
+            <label><input type="radio" name="q10" value="b"> B) La elaboración exclusiva de contratos comerciales impresos.</label>
+            <label><input type="radio" name="q10" value="c"> C) La instalación de sistemas operativos en servidores locales.</label>
+        </div>
+
+        <button type="button" onclick="evaluarExamen()">Enviar Examen</button>
+    </form>
+
+    <!-- Sección de Resultados (Sin Diploma) -->
+    <div id="result-section">
+        <h3 id="result-title"></h3>
+        <p id="result-msg"></p>
+    </div>
+</div>
+
+<script>
+    const respuestasCorrectas = {
+        q1: 'a', q2: 'b', q3: 'c', q4: 'a', q5: 'b',
+        q6: 'c', q7: 'a', q8: 'b', q9: 'c', q10: 'a'
+    };
+
+    function evaluarExamen() {
+        let aciertos = 0;
+        let total = 10;
+        let respondidas = 0;
+
+        for (let key in respuestasCorrectas) {
+            let seleccionada = document.querySelector(`input[name="${key}"]:checked`);
+            if (seleccionada) {
+                respondidas++;
+                if (seleccionada.value === respuestasCorrectas[key]) {
+                    aciertos++;
+                }
+            }
+        }
+
+        if (respondidas < total) {
+            alert("Por favor responde todas las preguntas antes de enviar.");
+            return;
+        }
+
+        let porcentaje = (aciertos / total) * 100;
+        
+        document.getElementById('quiz-form').style.display = 'none';
+        let resSection = document.getElementById('result-section');
+        resSection.style.display = 'block';
+
+        let title = document.getElementById('result-title');
+        let msg = document.getElementById('result-msg');
+
+        if (porcentaje >= 70) {
+            title.style.color = "#10B981";
+            title.innerText = "¡Excelente Trabajo, Nivel 2 Aprobado!";
+            msg.innerText = `Obtuviste ${porcentaje.toFixed(0)}% de aciertos (${aciertos}/${total}). ¡Felicidades por completar el Nivel 2! Ya puedes continuar con el siguiente nivel.`;
+        } else {
+            title.style.color = "#EF4444";
+            title.innerText = "Sigue practicando";
+            msg.innerText = `Obtuviste ${porcentaje.toFixed(0)}% (${aciertos}/${total}). Necesitas al menos un 70% (7 aciertos) para aprobar. ¡Repasa la guía y vuelve a intentarlo!`;
+        }
+    }
+</script>
+
+</body>
+</html>

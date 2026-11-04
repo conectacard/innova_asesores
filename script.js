@@ -1,0 +1,424 @@
+// CONTROL DE VISTAS (HOME <-> CURSO)
+async function mostrarVistaCurso() {
+    let codigoGuardado = localStorage.getItem('escuela_codigo_activo');
+
+    if (!codigoGuardado) {
+        let codigoIngresado = prompt("Ingresa el código de acceso de tu escuela para entrar al curso (8 días de vigencia):");
+        if (!codigoIngresado) {
+            return; // Si le da cancelar, no hace nada y se queda en el home
+        }
+        codigoGuardado = codigoIngresado.trim();
+    }
+
+    // Validar con Supabase
+    const resultado = await validarCodigoEscuela(codigoGuardado);
+
+    if (resultado.valido) {
+        localStorage.setItem('escuela_codigo_activo', codigoGuardado);
+        
+        // Detener el video del home al salir
+        const iframeHome = document.getElementById('home-video');
+        if (iframeHome) iframeHome.src = "";
+
+        document.getElementById('view-home').style.display = 'none';
+        document.getElementById('view-curso').style.display = 'flex';
+        cargarLeccionesNivel(1);
+    } else {
+        alert(resultado.mensaje);
+        localStorage.removeItem('escuela_codigo_activo');
+    }
+}
+
+function mostrarVistaHome() {
+    // Restaurar el video del home al regresar
+    const iframeHome = document.getElementById('home-video');
+    if (iframeHome) iframeHome.src = "https://www.youtube.com/embed/YMvJnRkv_ek";
+
+    document.getElementById('view-curso').style.display = 'none';
+    document.getElementById('view-home').style.display = 'flex';
+}
+
+// CONTROL DE MODALES
+function abrirModal(modalId) {
+    document.getElementById(modalId).style.display = "flex";
+}
+function cerrarModal(modalId) {
+    document.getElementById(modalId).style.display = "none";
+}
+window.onclick = function(event) {
+    if (event.target.classList.contains('modal')) {
+        event.target.style.display = "none";
+    }
+}
+
+// BASE DE DATOS DE LAS 60 LECCIONES (4 NIVELES x 15 LECCIONES)
+let nivelActual = 1;
+
+function cambiarNivel(numNivel) {
+    nivelActual = numNivel;
+    
+    // Cambiar clases activas en pestañas
+    const tabs = document.querySelectorAll('.tab-nivel');
+    tabs.forEach((tab, index) => {
+        if((index + 1) === numNivel) {
+            tab.classList.add('active');
+        } else {
+            tab.classList.remove('active');
+        }
+    });
+
+    cargarLeccionesNivel(numNivel);
+}
+
+function cargarNombresLeccion(nivel) {
+    if(nivel === 1) {
+        return [
+            "¿Qué es la Inteligencia Artificial? / Fundamentos de LLMs",
+            "¿Qué es un Prompt? Prompt Engineering Base",
+            "Semejanzas y diferencias entre Chatgpt, Gemini AI, Copilot, Perplexity y Deepseek",
+            "Tipos de Prompts: Secuenciales, Estructurales, Argumentales, Comparativos",
+            "Prompts de comunicación personales / Creando tu propia comunicación",
+            "Creando diferentes Prompts: canciones, música, imágenes, Ensayos, Resumen, videos",
+            "Suno Música / Otras IA de Música",
+            "Creacion de productos en Gemini y ChatGPT",
+            "Conociendo bancos de audio, videos e imágenes para mis proyectos",
+            "Trucos de Captura de pantalla y separación de audio y videos para crear tus propios Bancos de Videos, Imagenes y audios"
+        ];
+    } else if(nivel === 2) {
+        return [
+            "Creación de imagenes con IA: Microsoft Designer, Leonardo AI, DALL-E, Gemini,DeepAI Image Generator, Craiyon",
+            "Creacion de imagenes 3D: Meshy AI, Hunyuan 3D, Trellis, Picasso IA",
+            "Creación de voz en off: ElevenLabs, Descript, TTS Maker",
+            "Creadores de Video Sintético y Cinemático (De texto a video): Runway / Pika / Kling / Hailuo",
+            "Avatares y Presentadores: HeyGen y Synthesia / Editores de Video: InVideo.io",
+            "Generadores de Video por IA con Ritmo Musical / Creativo: Seedance",
+            "Generadores de presentaciones con IA: Gamma App, Tome (tome.app)",
+            "Editor de código fuente y software VS CODE y estructura de Carpetas",
+            "¿Porqué mi proyecto no funciona?",
+            "Haciendo mi primer Proyecto con VS CODE + GEMINI"
+        ];
+    } else if(nivel === 3) {
+        return [
+            "Creación de Catálogo Musical",
+            "Creación de Landing Pages: Cafetería y Agencia Automotriz",
+            "Creación de Juego de tic tac toe gato y Memorama",
+            "Creación de Agenda Calendario y ID de Presentación",
+            "Creación de CRM, Sistemas de gestión y formularios",
+            "Creación de Catálogo de videos para aprender idiomas",
+            "Creación de Una estación de Radio (Vocaroo)",
+            "Edicion por sustitución en los códigos y carpetas",
+            "Edición por Adición y Extensión",
+            "Usando Surge / Netifly para subir Proyectos"
+        ];
+    } else {
+        return [
+            "Crea una app, Landing Page, etc. sin usar la carpeta assets, solo el promtp",
+            "Crea una app, Landing Page, etc. usando la carpeta assets, con tus propios recursos",
+            "Crea una app, Landing Page, etc. usando la carpeta assets, y links de videos",
+            "Crea una app, Landing Page, catálogo, etc. con el método de edición por sustitución",
+            "Crea una app, Landing Page, catálogo, etc. con el método de adición y extensión por sustitución",
+            "Certificación Internacional Elements of AI (Universidad de Helsinki) Cap 1 y 2",
+            "Certificación Internacional Elements of AI (Universidad de Helsinki) Cap 3",
+            "Certificación Internacional Elements of AI (Universidad de Helsinki) Cap 4",
+            "Certificación Internacional Elements of AI (Universidad de Helsinki) Cap 5",
+            "Certificación Internacional Elements of AI (Universidad de Helsinki) Cap 6 Examen final y Cierre de Curso"
+        ];
+    }
+}
+
+function cargarLeccionesNivel(nivel) {
+    const sidebar = document.getElementById('lista-lecciones');
+    sidebar.innerHTML = '';
+    
+    const nombres = cargarNombresLeccion(nivel);
+
+    nombres.forEach((nombre, index) => {
+        const numLeccion = index + 1;
+        const btn = document.createElement('button');
+        btn.className = `btn-leccion ${index === 0 ? 'active' : ''}`;
+        btn.innerText = `Lección ${numLeccion}: ${nombre}`;
+        btn.onclick = () => seleccionarLeccion(nivel, numLeccion, nombre);
+        sidebar.appendChild(btn);
+    });
+
+    // Cargar la primera por defecto
+    seleccionarLeccion(nivel, 1, nombres[0]);
+}
+
+function seleccionarLeccion(nivel, leccionNum, nombre) {
+    // Actualizar el estado visual activo en los botones de la barra lateral
+    const botonesLeccion = document.querySelectorAll('#lista-lecciones .btn-leccion');
+    botonesLeccion.forEach((btn, index) => {
+        if ((index + 1) === leccionNum) {
+            btn.classList.add('active');
+        } else {
+            btn.classList.remove('active');
+        }
+    });
+
+    // Actualizar título activo
+    document.getElementById('titulo-leccion-activa').innerText = `Nivel ${nivel} - Lección ${leccionNum}: ${nombre}`;
+    
+    // Asignación dinámica del video por nivel y lección
+    let urlVideo = "https://www.youtube.com/embed/LcqjlzUucIU"; // Video por defecto o respaldo
+
+    if (nivel === 1) {
+        if (leccionNum === 1) {
+            urlVideo = "https://www.youtube.com/embed/_TCPuoHrbiQ";
+        } else if (leccionNum === 2) {
+            urlVideo = "https://www.youtube.com/embed/VWWM7CGwouw";
+        } else if (leccionNum === 3) {
+            urlVideo = "https://www.youtube.com/embed/V8GKTO6_wTw";
+        } else if (leccionNum === 4) {
+            urlVideo = "https://www.youtube.com/embed/DfbNqnjcDwA";
+        } else if (leccionNum === 5) {
+            urlVideo = "https://www.youtube.com/embed/ujJZO6ARCpA";
+        } else if (leccionNum === 6) {
+            urlVideo = "https://www.youtube.com/embed/V332AkH1h6A";
+        } else if (leccionNum === 7) {
+            urlVideo = "https://www.youtube.com/embed/1RumCMbUHUA";
+        } else if (leccionNum === 8) {
+            urlVideo = "https://www.youtube.com/embed/eEvwJRPhB90";
+        } else if (leccionNum === 9) {
+            urlVideo = "https://www.youtube.com/embed/mpPosPn8yjk";
+        } else if (leccionNum === 10) {
+            urlVideo = "https://www.youtube.com/embed/LD4y0XzMilY";
+        }
+    } else if (nivel === 2) {
+        if (leccionNum === 1) {
+            urlVideo = "https://www.youtube.com/embed/ErJu0AcepMM"; // Nivel 2 - Lección 1: Creación de imagenes con IA (Microsoft Designer, Leonardo AI, DALL-E, Gemini, DeepAI Image Generator, Craiyon)
+        } else if (leccionNum === 2) {
+            urlVideo = "https://www.youtube.com/embed/xgsFlixlQ90"; // Nivel 2 - Lección 2: Creacion de imagenes 3D (Meshy AI, Hunyuan 3D, Trellis, Picasso IA)
+        } else if (leccionNum === 3) {
+            urlVideo = "https://www.youtube.com/embed/zg7gWVz8WPU"; // Nivel 2 - Lección 3: Creación de voz en off (ElevenLabs, Descript, TTS Maker)
+        } else if (leccionNum === 4) {
+            urlVideo = "https://www.youtube.com/embed/QsupY7WjAjE"; // Nivel 2 - Lección 4: Creadores de Video Sintético y Cinemático (De texto a video): Runway / Pika / Kling / Hailuo
+        } else if (leccionNum === 5) {
+            urlVideo = "https://www.youtube.com/embed/BSn_8W_BNaQ"; // Nivel 2 - Lección 5: Avatares y Presentadores (HeyGen y Synthesia) / Editores de Video (InVideo.io)
+        } else if (leccionNum === 6) {
+            urlVideo = "https://www.youtube.com/embed/yPQCQtccjTE"; // Nivel 2 - Lección 6: Generadores de Video por IA con Ritmo Musical / Creativo: Seedance
+        } else if (leccionNum === 7) {
+            urlVideo = "https://www.youtube.com/embed/xq5XT2alQ0Y"; // Nivel 2 - Lección 7: Generadores de presentaciones con IA: Gamma App, Tome (tome.app)
+        } else if (leccionNum === 8) {
+            urlVideo = "https://www.youtube.com/embed/dUH52-Fb2cU"; // Nivel 2 - Lección 8: Editor de código fuente y software VS CODE y estructura de Carpetas
+        } else if (leccionNum === 9) {
+            urlVideo = "https://www.youtube.com/embed/hIjNna_BhC0"; // Nivel 2 - Lección 9: ¿Porqué mi proyecto no funciona?
+        } else if (leccionNum === 10) {
+            urlVideo = "https://www.youtube.com/embed/N6xiqjp80SQ"; // Nivel 2 - Lección 10: Haciendo mi primer Proyecto con VS CODE + GEMINI
+        }
+    } else if (nivel === 3) {
+        if (leccionNum === 1) {
+            urlVideo = "https://www.youtube.com/embed/tOk682sJE8Y"; // Nivel 3 - Lección 1: Creación de Catálogo Musical
+        } else if (leccionNum === 2) {
+            urlVideo = "https://www.youtube.com/embed/fyke4_6W68s"; // Nivel 3 - Lección 2: Creación de Landing Pages
+        } else if (leccionNum === 3) {
+            urlVideo = "https://www.youtube.com/embed/S6Vse1UTCiM"; // Nivel 3 - Lección 3: Creación de Juego de tic tac toe gato y Memorama
+        } else if (leccionNum === 4) {
+            urlVideo = "https://www.youtube.com/embed/v8s-5kFWaXc"; // Nivel 3 - Lección 4: Creación de Agenda Calendario y ID de Presentación
+        } else if (leccionNum === 5) {
+            urlVideo = "https://www.youtube.com/embed/LcGUO_9noOs"; // Nivel 3 - Lección 5: Creación de CRM, Sistemas de gestión y formularios
+        } else if (leccionNum === 6) {
+            urlVideo = "https://www.youtube.com/embed/bUpHZJhFmuc"; // Nivel 3 - Lección 6: Creación de Catálogo de videos para aprender idiomas
+        } else if (leccionNum === 7) {
+            urlVideo = "https://www.youtube.com/embed/7XATk2Oo69A"; // Nivel 3 - Lección 7: Creación de Una estación de Radio (Vocaroo)
+        } else if (leccionNum === 8) {
+            urlVideo = "https://www.youtube.com/embed/Q68aGQSwG1M"; // Nivel 3 - Lección 8: Edicion por sustitución en los códigos y carpetas
+        } else if (leccionNum === 9) {
+            urlVideo = "https://www.youtube.com/embed/dq7C6WJcUYs"; // Nivel 3 - Lección 9: Edición por Adición y Extensión
+        } else if (leccionNum === 10) {
+            urlVideo = "https://www.youtube.com/embed/T5kW7mMtca0"; // Nivel 3 - Lección 10: Usando Surge / Netlify para subir Proyectos
+        }
+    } else if (nivel === 4) {
+        if (leccionNum === 1) {
+            urlVideo = "https://www.youtube.com/embed/t04KjDdMR7Y"; // Nivel 4 - Lección 1: Crea una app, Landing Page, etc. sin usar la carpeta assets, solo el prompt
+        } else if (leccionNum === 2) {
+            urlVideo = "https://www.youtube.com/embed/VQwhEnVYM3A"; // Nivel 4 - Lección 2: Crea una app, Landing Page, etc. usando la carpeta assets, con tus propios recursos
+        } else if (leccionNum === 3) {
+            urlVideo = "https://www.youtube.com/embed/pObLatxr2EQ"; // Nivel 4 - Lección 3: Crea una app, Landing Page, etc. usando la carpeta assets, y links de videos
+        } else if (leccionNum === 4) {
+            urlVideo = "https://www.youtube.com/embed/wFzDFV7yDWk"; // Nivel 4 - Lección 4: Crea una app, Landing Page, catálogo, etc. con el método de edición por sustitución
+        } else if (leccionNum === 5) {
+            urlVideo = "https://www.youtube.com/embed/2FKpEYeSwus"; // Nivel 4 - Lección 5: Crea una app, Landing Page, catálogo, etc. con el método de adición y extensión por sustitución
+        } else if (leccionNum === 6) {
+            urlVideo = "https://www.youtube.com/embed/lgKTzH-FKmI"; // Nivel 4 - Lección 6: Certificación Internacional Elements of AI (Universidad de Helsinki) Cap 1 y 2
+        } else if (leccionNum === 7) {
+            urlVideo = "https://www.youtube.com/embed/-FFFU8MR8n8"; // Nivel 4 - Lección 7: Certificación Internacional Elements of AI (Universidad de Helsinki) Cap 3
+        } else if (leccionNum === 8) {
+            urlVideo = "https://www.youtube.com/embed/cx03-3IdaJU"; // Nivel 4 - Lección 8: Certificación Internacional Elements of AI (Universidad de Helsinki) Cap 4
+        } else if (leccionNum === 9) {
+            urlVideo = "https://www.youtube.com/embed/M6ntTkXQVUM"; // Nivel 4 - Lección 9: Certificación Internacional Elements of AI (Universidad de Helsinki) Cap 5
+        } else if (leccionNum === 10) {
+            urlVideo = "https://www.youtube.com/embed/npgtRfSospE"; // Nivel 4 - Lección 10: Certificación Internacional Elements of AI (Universidad de Helsinki) Cap 6 Examen final y Cierre de Curso
+        }
+        // Aquí puedes seguir agregando tus demás links de video conforme los vayas subiendo:
+        // else if (leccionNum === 11) { urlVideo = "https://www.youtube.com/embed/OTRO_ID"; }
+    }
+
+    document.getElementById('video-leccion').src = urlVideo;
+    
+    // CORRECCIÓN DEL PDF (Ruta relativa directa para evitar el 404 en GitHub Pages)
+    let rutaPdf = `Nivel${nivel}/lecc_${leccionNum}_guia.pdf`;
+    
+    const btnPdf = document.getElementById('btn-pdf');
+    btnPdf.href = rutaPdf;
+    btnPdf.setAttribute('target', '_blank');
+
+    // Control visual del Examen: Solo aparece en la lección 10 (última del nivel)
+    const panelEvaluacion = document.querySelector('.evaluacion-panel');
+    if (leccionNum === 10) {
+        panelEvaluacion.style.display = "block";
+        const btnEval = panelEvaluacion.querySelector('.btn-eval');
+        
+        // Asignación limpia del examen correspondiente por nivel
+        btnEval.href = `nivel${nivel}_examen.html`;
+        btnEval.onclick = null;
+        
+        if (nivel === 4) {
+            btnEval.innerHTML = "📝 Presentar Examen Final y Solicitar Diploma (&gt;70% + Link de Portafolio)";
+        } else {
+            btnEval.innerHTML = "📝 Presentar Examen de Nivel para pasar al siguiente nivel";
+        }
+    } else {
+        panelEvaluacion.style.display = "none";
+    }
+}
+
+function lanzarEvaluacionNivel(nivelExamen) {
+    const aciertos = prompt(`Evaluación del Nivel ${nivelExamen}:\n¿Cuántos aciertos obtuvo el alumno en el cuestionario? (Ingresa el número de aciertos):`);
+    if(aciertos !== null) {
+        const totalPreguntas = 10;
+        const porcentaje = (parseInt(aciertos) / totalPreguntas) * 100;
+        if(porcentaje >= 70) {
+            alert(`¡Aprobado con ${porcentaje.toFixed(0)}% de aciertos! Has acreditado el Nivel ${nivelExamen} y puedes avanzar al siguiente nivel.`);
+        } else {
+            alert(`Calificación: ${porcentaje.toFixed(0)}%. Se requiere un mínimo de 70% de aciertos para aprobar este nivel.`);
+        }
+    }
+}
+
+// Configuración de Supabase para validación de escuelas
+const SUPABASE_URL = "https://fjtzyxnpgxxsducxxobx.supabase.co"; // Tu URL de Supabase
+const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZqdHp5eG5wZ3h4c2R1Y3h4b2J4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTAyNDgwNjksImV4cCI6MjEwNTgyNDA2OX0.LlTw1ATsXpQTwzF72YjAe9ubgFWDZJSfBhRSCfj0aJw";
+
+async function validarCodigoEscuela(codigoIngresado) {
+    try {
+        const response = await fetch(`${SUPABASE_URL}/rest/v1/escuelas_demo?codigo=eq.${codigoIngresado}&select=*`, {
+            headers: {
+                "apikey": SUPABASE_ANON_KEY,
+                "Authorization": `Bearer ${SUPABASE_ANON_KEY}`
+            }
+        });
+
+        const data = await response.json();
+
+        if (!data || data.length === 0) {
+            return { valido: false, mensaje: "El código ingresado no existe." };
+        }
+
+        const escuela = data[0];
+
+        if (!escuela.activo) {
+            return { valido: false, mensaje: "Este código ha sido desactivado." };
+        }
+
+        // Validación automática de vigencia (calculada en días)
+        const fechaCreacion = new Date(escuela.fecha_creacion);
+        const diasVigencia = Number(escuela.dias_vigencia) || 8;
+        
+        // Calcular la fecha exacta de expiración sumando los días
+        const fechaExpiracion = new Date(fechaCreacion.getTime());
+        fechaExpiracion.setDate(fechaExpiracion.getDate() + diasVigencia);
+
+        const fechaActual = new Date();
+
+        // Si la fecha actual sobrepasa la fecha de expiración, se bloquea
+        if (fechaActual > fechaExpiracion) {
+            return { 
+                valido: false, 
+                mensaje: `El acceso de la escuela ${escuela.nombre_escuela} ha expirado (su periodo de prueba de ${diasVigencia} días ha finalizado).` 
+            };
+        }
+
+        return { 
+            valido: true, 
+            mensaje: `¡Acceso concedido! Bienvenido, ${escuela.nombre_escuela}.`,
+            escuela: escuela
+        };
+
+    } catch (error) {
+        console.error("Error al conectar con Supabase:", error);
+        return { valido: false, mensaje: "Error de conexión al validar el código." };
+    }
+}
+
+// Carga normal libre para visitantes y directores
+window.onload = function() {
+    console.log("InnovaPro IA cargado con éxito. Presentación abierta para visitantes.");
+};
+
+// CONTROL DE CANDADO Y GENERACIÓN DE DIPLOMA INSTITUCIONAL
+function generarDiplomaAlumno() {
+    const inputNombre = document.getElementById('input-nombre-alumno');
+    if (!inputNombre) return;
+
+    let nombreGuardado = localStorage.getItem('alumno_nombre_diploma');
+
+    // Si ya existe un nombre guardado, bloqueamos y usamos ese obligatoriamente
+    if (nombreGuardado) {
+        inputNombre.value = nombreGuardado;
+        inputNombre.disabled = true;
+        alert(`Ya tienes un nombre registrado ("${nombreGuardado}"). Por seguridad institucional, no se puede modificar.`);
+    } else {
+        let nombreIngresado = inputNombre.value.trim();
+        if (!nombreIngresado || nombreIngresado.length < 3) {
+            alert("Por favor, escribe tu nombre completo correctamente antes de descargar.");
+            return;
+        }
+        // Guardamos el nombre para siempre en este navegador/dispositivo
+        localStorage.setItem('alumno_nombre_diploma', nombreIngresado);
+        nombreGuardado = nombreIngresado;
+        inputNombre.disabled = true;
+        alert("¡Nombre registrado con éxito! A continuación se generará tu diploma.");
+    }
+
+    // Dibujar y descargar el diploma usando diploma_base.jpg
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+    const img = new Image();
+    
+    img.crossOrigin = "anonymous";
+    img.src = "diploma_base.jpg"; // Asegúrate de tener este archivo al lado de tu html/script
+
+    img.onload = function() {
+        canvas.width = img.width;
+        canvas.height = img.height;
+        ctx.drawImage(img, 0, 0);
+
+        // Configuración del texto del nombre sobre el diploma
+        ctx.font = "bold 55px Arial";
+        ctx.fillStyle = "#111111";
+        ctx.textAlign = "center";
+        
+        ctx.fillText(nombreGuardado.toUpperCase(), canvas.width / 2, 1150);
+
+        // Forzar la descarga automática del archivo resultante
+        const enlace = document.createElement('a');
+        enlace.download = `Diploma_${nombreGuardado.replace(/\s+/g, '_')}.jpg`;
+        enlace.href = canvas.toDataURL('image/jpeg', 0.95);
+        enlace.click();
+    };
+
+    img.onerror = function() {
+        alert("No se pudo cargar la imagen 'diploma_base.jpg'. Verifica que esté en la misma carpeta que tus archivos principales.");
+    };
+}
+
+// Al cargar la página, si ya hay un nombre guardado, bloqueamos el input automáticamente
+window.addEventListener('DOMContentLoaded', () => {
+    const inputNombre = document.getElementById('input-nombre-alumno');
+    const nombreGuardado = localStorage.getItem('alumno_nombre_diploma');
+    if (inputNombre && nombreGuardado) {
+        inputNombre.value = nombreGuardado;
+        inputNombre.disabled = true;
+    }
+});

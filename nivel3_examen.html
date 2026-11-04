@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Examen Final - Nivel 3 | PWA InnovaPro IA</title>
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #f4f6f9; margin: 0; padding: 20px; color: #333; }
+        .container { max-width: 800px; margin: 0 auto; background: #fff; padding: 30px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); border-top: 5px solid #2563EB; }
+        h1, h2 { color: #2563EB; text-align: center; }
+        .question { margin-bottom: 20px; padding: 15px; background: #fafafa; border-left: 4px solid #2563EB; border-radius: 4px; }
+        .question p { font-weight: bold; margin-bottom: 10px; }
+        label { display: block; margin-bottom: 5px; cursor: pointer; }
+        button { display: block; width: 100%; background: #2563EB; color: #fff; border: none; padding: 12px; font-size: 16px; border-radius: 4px; cursor: pointer; margin-top: 20px; font-weight: bold; }
+        button:hover { background: #1D4ED8; }
+        #result-section { display: none; text-align: center; margin-top: 30px; padding: 20px; background: #eef2ff; border: 1px solid #c7d2fe; border-radius: 4px; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Examen Final - Nivel 3</h1>
+    <h2>Desarrollo Profesional con VS Code, Lógica Web y Despliegue Digital</h2>
+    <p style="text-align: center;">Responde las 10 preguntas basadas en tu programa de lecciones. Necesitas al menos un 70% de aciertos para aprobar el nivel.</p>
+
+    <form id="quiz-form">
+        <!-- Pregunta 1: Lección 1 (Catálogo Musical / Archivos) -->
+        <div class="question"><p>1. ¿Qué son y para qué sirven los archivos principales: html, script y style en un proyecto web?</p>
+            <label><input type="radio" name="q1" value="a"> A) Programas de diseño gráfico para imprimir pósters publicitarios.</label>
+            <label><input type="radio" name="q1" value="b"> B) HTML define la estructura, style (CSS) da los estilos visuales y script (JavaScript) otorga la interactividad y lógica.</label>
+            <label><input type="radio" name="q1" value="c"> C) Archivos de configuración exclusiva para el sistema operativo Windows.</label>
+        </div>
+
+        <!-- Pregunta 2: Lección 2 (Landing Page) -->
+        <div class="question"><p>2. ¿Qué es una landing page y cuál es su uso principal en proyectos como cafeterías o agencias automotrices?</p>
+            <label><input type="radio" name="q2" value="a"> A) Una página web diseñada con un enfoque comercial específico para captar la atención del usuario y guiarlo a una acción concreta (como cotizar o comprar).</label>
+            <label><input type="radio" name="q2" value="b"> B) Un controlador de hardware para conectar impresoras láser.</label>
+            <label><input type="radio" name="q2" value="c"> C) Un disco virtual de respaldo para almacenar música en formato MP3.</label>
+        </div>
+
+        <!-- Pregunta 3: Lección 3 (Tic Tac Toe / Memorama - Estructura de carpetas) -->
+        <div class="question"><p>3. ¿Qué es una estructura de carpetas en el desarrollo de proyectos web?</p>
+            <label><input type="radio" name="q3" value="a"> A) Un tipo de virus informático que bloquea el acceso al disco duro.</label>
+            <label><input type="radio" name="q3" value="b"> B) Un método de seguridad para cifrar contraseñas de correo electrónico.</label>
+            <label><input type="radio" name="q3" value="c"> C) La organización jerárquica y ordenada de directorios y archivos de código e imágenes que componen un sitio web.</label>
+        </div>
+
+        <!-- Pregunta 4: Lección 4 (Agenda / ID de Presentación - Carpeta assets) -->
+        <div class="question"><p>4. ¿Qué es y qué función cumple una carpeta assets dentro de un proyecto web?</p>
+            <label><input type="radio" name="q4" value="a"> A) Es el directorio especializado donde se almacenan y organizan todos los recursos multimedia del proyecto (imágenes, íconos, audios y hojas de estilo).</label>
+            <label><input type="radio" name="q4" value="b"> B) Es una carpeta temporal donde Windows guarda los archivos eliminados.</label>
+            <label><input type="radio" name="q4" value="c"> C) Es una herramienta de software para programar bases de datos en red.</label>
+        </div>
+
+        <!-- Pregunta 5: Lección 5 (CRM y formularios - Archivo .json) -->
+        <div class="question"><p>5. ¿Qué es un archivo con extensión .json en el contexto de sistemas y formularios web?</p>
+            <label><input type="radio" name="q5" value="a"> A) Un formato ligero de intercambio y almacenamiento estructurado de datos mediante texto plano legible.</label>
+            <label><input type="radio" name="q5" value="b"> B) Una imagen vectorial utilizada exclusivamente para diseño 3D.</label>
+            <label><input type="radio" name="q5" value="c"> C) Un documento de procesador de textos para redactar cartas formales.</label>
+        </div>
+
+        <!-- Pregunta 6: Lección 6 (Catálogo de idiomas - Contactos institucionales) -->
+        <div class="question"><p>6. ¿Qué son los CONTACTOS INSTITUCIONALES y para qué sirven en plataformas digitales y catálogos?</p>
+            <label><input type="radio" name="q6" value="a"> A) Directorios de claves de cifrado para redes Wi-Fi institucionales.</label>
+            <label><input type="radio" name="q6" value="b"> B) Canales directos de comunicación (teléfonos, correos, ubicación y redes sociales) integrados digitalmente para facilitar la conexión con la organización.</label>
+            <label><input type="radio" name="q6" value="c"> C) Componentes de hardware para conectar micrófonos profesionales.</label>
+        </div>
+
+        <!-- Pregunta 7: Lección 7 (Estación de Radio / Vocaroo) -->
+        <div class="question"><p>7. En la creación de una estación de radio digital, ¿para qué sirve una herramienta externa como Vocaroo?</p>
+            <label><input type="radio" name="q7" value="a"> A) Permite grabar, alojar y obtener fácilmente enlaces o códigos de inserción de audio para la página web.</label>
+            <label><input type="radio" name="q7" value="b"> B) Sirve para editar fotografías panorámicas y cambiar formatos de imagen.</label>
+            <label><input type="radio" name="q7" value="c"> C) Funciona como un antivirus local para limpiar la memoria caché de la PC.</label>
+        </div>
+
+        <!-- Pregunta 8: Lección 8 (Edición por Sustitución) -->
+        <div class="question"><p>8. ¿En qué consiste la técnica de EDICIÓN POR SUSTITUCIÓN en los códigos y carpetas?</p>
+            <label><input type="radio" name="q8" value="a"> A) Borrar por completo el proyecto y reinstalar el sistema operativo desde cero.</label>
+            <label><input type="radio" name="q8" value="b"> B) Duplicar carpetas al azar dentro del Escritorio de Windows.</label>
+            <label><input type="radio" name="q8" value="c"> C) Reemplazar textos, valores, rutas o archivos existentes por otros nuevos manteniendo intacta la estructura funcional base del proyecto.</label>
+        </div>
+
+        <!-- Pregunta 9: Lección 9 (Edición por Adición y Extensión) -->
+        <div class="question"><p>9. ¿Qué define a la EDICIÓN POR ADICIÓN Y EXTENSIÓN al modificar una aplicación web?</p>
+            <label><input type="radio" name="q9" value="a"> A) Incorporar nuevas secciones, componentes, funciones o estilos al código existente para ampliar las capacidades de la aplicación.</label>
+            <label><input type="radio" name="q9" value="b"> B) Comprimir todo el código fuente en un archivo ZIP para ahorrar espacio.</label>
+            <label><input type="radio" name="q9" value="c"> C) Copiar el archivo principal diez veces sin hacerle ninguna modificación.</label>
+        </div>
+
+        <!-- Pregunta 10: Lección 10 (Surge y Netlify) -->
+        <div class="question"><p>10. ¿Para qué sirven plataformas como Surge y Netlify en el desarrollo web?</p>
+            <label><input type="radio" name="q10" value="a"> A) Para instalar componentes físicos y tarjetas de red en la computadora.</label>
+            <label><input type="radio" name="q10" value="b"> B) Para publicar y hospedar de forma accesible sitios web estáticos en la nube mediante dominios personalizados y gratuitos.</label>
+            <label><input type="radio" name="q10" value="c"> C) Para diseñar logotipos institucionales impresos en papel fotográfico.</label>
+        </div>
+
+        <button type="button" onclick="evaluarExamen()">Enviar Examen</button>
+    </form>
+
+    <!-- Sección de Resultados (Sin Diploma) -->
+    <div id="result-section">
+        <h3 id="result-title"></h3>
+        <p id="result-msg"></p>
+    </div>
+</div>
+
+<script>
+    // Respuestas correctas mapeadas con incisos aleatorios
+    const respuestasCorrectas = {
+        q1: 'b', q2: 'a', q3: 'c', q4: 'a', q5: 'a',
+        q6: 'b', q7: 'a', q8: 'c', q9: 'a', q10: 'b'
+    };
+
+    function evaluarExamen() {
+        let aciertos = 0;
+        let total = 10;
+        let respondidas = 0;
+
+        for (let key in respuestasCorrectas) {
+            let seleccionada = document.querySelector(`input[name="${key}"]:checked`);
+            if (seleccionada) {
+                respondidas++;
+                if (seleccionada.value === respuestasCorrectas[key]) {
+                    aciertos++;
+                }
+            }
+        }
+
+        if (respondidas < total) {
+            alert("Por favor responde todas las preguntas antes de enviar.");
+            return;
+        }
+
+        let porcentaje = (aciertos / total) * 100;
+        
+        document.getElementById('quiz-form').style.display = 'none';
+        let resSection = document.getElementById('result-section');
+        resSection.style.display = 'block';
+
+        let title = document.getElementById('result-title');
+        let msg = document.getElementById('result-msg');
+
+        if (porcentaje >= 70) {
+            title.style.color = "#10B981";
+            title.innerText = "¡Excelente Trabajo, Nivel 3 Aprobado!";
+            msg.innerText = `Obtuviste ${porcentaje.toFixed(0)}% de aciertos (${aciertos}/${total}). ¡Felicidades por completar con éxito el Nivel 3! Ya puedes continuar con el siguiente nivel.`;
+        } else {
+            title.style.color = "#EF4444";
+            title.innerText = "Sigue practicando";
+            msg.innerText = `Obtuviste ${porcentaje.toFixed(0)}% (${aciertos}/${total}). Necesitas al menos un 70% (7 aciertos) para aprobar. ¡Repasa la guía y vuelve a intentarlo!`;
+        }
+    }
+</script>
+
+</body>
+</html>
